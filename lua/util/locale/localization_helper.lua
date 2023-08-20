@@ -47,19 +47,21 @@ function util.locale.find_missing_localizations(targetLanguage)
 	return result
 end
 
-function util.locale.generate_missing_localizations(apiKey, targetLanguage)
+function util.locale.generate_missing_localizations(apiKey, targetLanguages)
 	local curLan = locale.get_language()
 	if curLan ~= "en" then
 		error('Current language must be set to "en", but is "' .. curLan .. '"!')
 		return
 	end
 	local batchTranslator = util.ai.BatchTranslator(apiKey)
-	local missingLocs = util.locale.find_missing_localizations(targetLanguage)
-	for cat, missingIds in pairs(missingLocs) do
-		for _, id in ipairs(missingIds) do
-			local englishText = locale.get_raw_text(id)
-			if englishText ~= nil then
-				batchTranslator:Add(cat, id, englishText, targetLanguage)
+	for _, targetLanguage in ipairs(targetLanguages) do
+		local missingLocs = util.locale.find_missing_localizations(targetLanguage)
+		for cat, missingIds in pairs(missingLocs) do
+			for _, id in ipairs(missingIds) do
+				local englishText = locale.get_raw_text(id)
+				if englishText ~= nil then
+					batchTranslator:Add(cat, id, englishText, targetLanguage)
+				end
 			end
 		end
 	end
