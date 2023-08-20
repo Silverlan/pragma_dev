@@ -35,6 +35,7 @@ function BatchTranslator:Process()
 			print(
 				"Adding localization for '" .. queryData.id .. "' for language '" .. queryData.targetLanguage .. "'..."
 			)
+			data = string.replace(data, "\n", "\\n")
 			locale.localize(queryData.id, queryData.targetLanguage, queryData.category, data)
 			self.m_running = false
 			self:Process()
