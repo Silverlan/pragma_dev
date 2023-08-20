@@ -28,7 +28,7 @@ function ChatGPT:Query(query, callback)
 	}
 
 	requestData.postData = json.stringify({
-		["model"] = "gpt-3.5-turbo",
+		["model"] = "gpt-4", -- "gpt-3.5-turbo",
 		["temperature"] = 0.7,
 		["messages"] = {
 			{
@@ -92,7 +92,7 @@ end
 function util.ai.translate(apiKey, text, language, callback)
 	local query = 'Translate the following to the language "'
 		.. language
-		.. '" for use in a 3D modelling/animation software UI. Only provide the translation as a result. Do not translate portions in curly brackets:\n'
+		.. '" for use in a 3D modelling/animation software UI, similar to Blender or SFM. Only provide the translation as a result. Do not translate portions in curly brackets:\n'
 		.. text
 	return util.ai.query(apiKey, query, callback)
 end
