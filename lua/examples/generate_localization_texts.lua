@@ -8,6 +8,7 @@ local targetLanguages = {
 	"fr",
 	"zh-cn",
 	"it",
+	"pl",
 }
 
 -- Note that running this function will use up ChatGPT tokens, which come with a fee. Check ChatGPT Pricing for more information.
