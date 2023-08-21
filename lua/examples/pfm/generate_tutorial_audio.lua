@@ -71,7 +71,7 @@ local function process_next()
 	end
 	print("Processing '" .. t.id .. "'...")
 	table.remove(processList, 1)
-	util.ai.text_to_speech(apiKey, "Bella", t.text, t.audioFile, function(res)
+	util.ai.text_to_speech(apiKey, voice, t.text, t.audioFile, function(res)
 		print("Result: ", res)
 		if res then
 			process_next()
