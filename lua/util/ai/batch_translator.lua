@@ -10,8 +10,9 @@ include("query.lua")
 
 util.ai = util.ai or {}
 local BatchTranslator = util.register_class("util.ai.BatchTranslator")
-function BatchTranslator:__init(apiKey)
+function BatchTranslator:__init(apiKey, modelId)
 	self.m_apiKey = apiKey
+	self.m_modelId = modelId
 	self.m_queries = {}
 end
 
@@ -42,7 +43,7 @@ function BatchTranslator:Process()
 		else
 			console.print_warning("Localization failed...")
 		end
-	end)
+	end, self.m_modelId)
 end
 
 function BatchTranslator:Add(cat, id, englishText, targetLanguage)

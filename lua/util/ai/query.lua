@@ -10,8 +10,9 @@ require("modules/json")
 
 util.ai = util.ai or {}
 local ChatGPT = util.register_class("util.ai.ChatGPT")
-function ChatGPT:__init(apiKey)
+function ChatGPT:__init(apiKey, modelId)
 	self.m_apiKey = apiKey
+	self.m_modelId = modelId or "gpt-4" -- "gpt-3.5-turbo"
 end
 function ChatGPT:Clear()
 	if self.m_request ~= nil then
@@ -27,8 +28,9 @@ function ChatGPT:Query(query, callback)
 		"Authorization: Bearer " .. self.m_apiKey,
 	}
 
+	print("Using model '" .. self.m_modelId .. "'...")
 	requestData.postData = json.stringify({
-		["model"] = "gpt-4", -- "gpt-3.5-turbo",
+		["model"] = self.m_modelId,
 		["temperature"] = 0.7,
 		["messages"] = {
 			{
@@ -57,14 +59,14 @@ function ChatGPT:Query(query, callback)
 	end)
 end
 
-function util.ai.query(apiKey, query, callback)
-	local el = util.ai.ChatGPT(apiKey)
+function util.ai.query(apiKey, query, callback, modelId)
+	local el = util.ai.ChatGPT(apiKey, modelId)
 
 	local function retry()
 		local t = 30.0
 		print("Attempting again in " .. t .. " seconds...")
 		time.create_simple_timer(t, function()
-			util.ai.query(apiKey, query, callback)
+			util.ai.query(apiKey, query, callback, modelId)
 		end)
 		el:Clear()
 		el = nil
@@ -89,10 +91,10 @@ function util.ai.query(apiKey, query, callback)
 	end)
 end
 
-function util.ai.translate(apiKey, text, language, callback)
+function util.ai.translate(apiKey, text, language, callback, modelId)
 	local query = 'Translate the following to the language "'
 		.. language
 		.. '" for use in a 3D modelling/animation software UI, similar to Blender or SFM. Only provide the translation as a result. Do not translate portions in curly brackets:\n'
 		.. text
-	return util.ai.query(apiKey, query, callback)
+	return util.ai.query(apiKey, query, callback, modelId)
 end
