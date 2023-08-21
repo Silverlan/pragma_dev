@@ -55,14 +55,17 @@ function util.locale.generate_missing_localizations(apiKey, targetLanguages, mod
 	end
 	local batchTranslator = util.ai.BatchTranslator(apiKey, modelId)
 	for _, targetLanguage in ipairs(targetLanguages) do
+		local numItems = 0
 		local missingLocs = util.locale.find_missing_localizations(targetLanguage)
 		for cat, missingIds in pairs(missingLocs) do
 			for _, id in ipairs(missingIds) do
 				local englishText = locale.get_raw_text(id)
 				if englishText ~= nil then
 					batchTranslator:Add(cat, id, englishText, targetLanguage)
+					numItems = numItems + 1
 				end
 			end
 		end
+		print(numItems .. " items added for language '" .. targetLanguage .. "!")
 	end
 end
