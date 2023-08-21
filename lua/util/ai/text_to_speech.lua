@@ -10,8 +10,9 @@ require("modules/json")
 
 util.ai = util.ai or {}
 local ElevenLabs = util.register_class("util.ai.ElevenLabs")
-function ElevenLabs:__init(apiKey)
+function ElevenLabs:__init(apiKey, modelId)
 	self.m_apiKey = apiKey
+	self.m_modelId = modelId
 end
 function ElevenLabs:Clear()
 	if self.m_request ~= nil then
@@ -66,7 +67,7 @@ function ElevenLabs:TextToSpeech(text, voiceId, callback)
 	}
 	requestData.postData = json.stringify({
 		["text"] = text,
-		["model_id"] = "eleven_monolingual_v1",
+		["model_id"] = self.m_modelId or "eleven_monolingual_v1",
 		["voice_settings"] = {
 			["stability"] = 0.5,
 			["similarity_boost"] = 0.75,
@@ -120,8 +121,8 @@ function ElevenLabs:Download(id, callback)
 	end)
 end
 
-function util.ai.text_to_speech(apiKey, voice, text, fileName, callback)
-	local el = util.ai.ElevenLabs(apiKey)
+function util.ai.text_to_speech(apiKey, voice, text, fileName, callback, modelId)
+	local el = util.ai.ElevenLabs(apiKey, modelId)
 	el:GetVoiceId(voice, function(res, id)
 		if res then
 			el:TextToSpeech(text, id, function(res, data)
@@ -130,6 +131,10 @@ function util.ai.text_to_speech(apiKey, voice, text, fileName, callback)
 					if f ~= nil then
 						f:Write(data)
 						f:Close()
+
+						callback(true)
+					else
+						callback(false)
 					end
 				elseif callback ~= nil then
 					callback(false)
