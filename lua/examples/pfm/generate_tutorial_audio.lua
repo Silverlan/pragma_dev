@@ -36,6 +36,9 @@ for _, textInfo in ipairs(targetTexts) do
 
 		text = text:replace("\n\n", "\n...\n")
 		text = text:replace(" > ", ", ")
+		text = text:replace(" > ", ", ")
+		text = text:replace("「", '"')
+		text = text:replace("」", '"')
 
 		local pos = text:find("{")
 		while pos ~= nil do
