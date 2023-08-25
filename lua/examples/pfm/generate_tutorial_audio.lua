@@ -9,7 +9,7 @@ local fullAddonPath = "addons/pfm_tutorials/" .. addonPath
 
 local apiKey = "*********ELEVEN LABS API KEY*********"
 local voice = "Bella"
-local modelId = "eleven_multilingual_v1"
+local modelId = "eleven_multilingual_v2"
 
 local prefix = "pfm_tut_" .. tutorial .. "_"
 local texts = util.locale.get_language_texts(lan)
