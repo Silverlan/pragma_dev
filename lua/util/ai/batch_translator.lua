@@ -37,6 +37,12 @@ function BatchTranslator:Process()
 				"Adding localization for '" .. queryData.id .. "' for language '" .. queryData.targetLanguage .. "'..."
 			)
 			data = string.replace(data, "\n", "\\n")
+			if queryData.targetLanguage == "jp" then
+				-- Replace quotes ("") with 「」
+				data = data:gsub('"(.-)"', function(w)
+					return "「" .. w .. "」"
+				end)
+			end
 			locale.localize(queryData.id, queryData.targetLanguage, queryData.category, data)
 			self.m_running = false
 			self:Process()
