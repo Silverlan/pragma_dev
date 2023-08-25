@@ -65,9 +65,11 @@ function ElevenLabs:TextToSpeech(text, voiceId, callback)
 		"xi-api-key: " .. self.m_apiKey,
 		"Content-Type: application/json",
 	}
+	local modelId = self.m_modelId or "eleven_monolingual_v2"
+	print("Using model '" .. modelId .. "'...")
 	requestData.postData = json.stringify({
 		["text"] = text,
-		["model_id"] = self.m_modelId or "eleven_monolingual_v1",
+		["model_id"] = modelId,
 		["voice_settings"] = {
 			["stability"] = 0.5,
 			["similarity_boost"] = 0.75,
