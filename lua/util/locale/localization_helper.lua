@@ -47,13 +47,13 @@ function util.locale.find_missing_localizations(targetLanguage)
 	return result
 end
 
-function util.locale.generate_missing_localizations(apiKey, targetLanguages, modelId)
+function util.locale.generate_missing_localizations(targetLanguages, modelId)
 	local curLan = locale.get_language()
 	if curLan ~= "en" then
 		error('Current language must be set to "en", but is "' .. curLan .. '"!')
 		return
 	end
-	local batchTranslator = util.ai.BatchTranslator(apiKey, modelId)
+	local batchTranslator = util.ai.BatchTranslator(modelId)
 	for _, targetLanguage in ipairs(targetLanguages) do
 		local numItems = 0
 		local missingLocs = util.locale.find_missing_localizations(targetLanguage)

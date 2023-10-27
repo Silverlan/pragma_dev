@@ -10,8 +10,7 @@ include("query.lua")
 
 util.ai = util.ai or {}
 local BatchTranslator = util.register_class("util.ai.BatchTranslator")
-function BatchTranslator:__init(apiKey, modelId)
-	self.m_apiKey = apiKey
+function BatchTranslator:__init(modelId)
 	self.m_modelId = modelId
 	self.m_queries = {}
 end
@@ -28,9 +27,11 @@ function BatchTranslator:Process()
 	local queryData = self.m_queries[1]
 	table.remove(self.m_queries, 1)
 	self.m_running = true
-	util.ai.translate(self.m_apiKey, queryData.englishText, queryData.targetLanguage, function(res, data)
+	print("Processing next item...")
+	util.ai.translate(queryData.englishText, queryData.targetLanguage, function(res, data)
 		if res then
 			if self.m_cancelled then
+				print("Batch translation has been cancelled!")
 				return
 			end
 			print(
