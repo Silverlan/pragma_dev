@@ -47,6 +47,7 @@ function ChatGPT:Query(query, callback)
 			},
 		},
 	})
+	requestData.timeoutMs = 30 * 1000
 
 	local request = curl.request("https://api.openai.com/v1/chat/completions", requestData)
 	request:Start()
